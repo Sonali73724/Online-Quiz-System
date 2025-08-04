@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizlina - Quizzes</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .menu {
+            background-color: black;
+            padding:20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/#step">Steps</a></li>
+            <li><a href="#!">Quizes</a></li>
+                    <% if (user_logged_in) { %>
+                                <li><a href="my-results"> Results</a></li>
+                                <li><a href="logout">Logout</a></li>
+                            <% } else { %>
+                                <li><a href="login">Login</a></li>
+                            <% } %>        </ul>
+    </div>
+
+    <div class="quizes-container">
+        <h1>Available Quizzes</h1>
+        <div class="quiz-cards">
+            <% quizzes.forEach((quiz, index) => { %>
+                <div class="quiz-card">
+                    <div class="quiz-info">
+                        <h2>Quiz <%= index + 1 %>: <%= quiz.name %></h2>
+                        <p>Duration: <%= quiz.duration %> minutes</p>
+                    </div>
+                    <% if (isLoggedIn) { %>
+                        <a href="/quiz/<%= quiz.id %>" class="start-btn">Start Now</a>
+                    <% } else { %>
+                        <a href="/login" class="start-btn">Login to Start</a>
+                    <% } %>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+</body>
+</html>

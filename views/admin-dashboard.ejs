@@ -1,0 +1,42 @@
+<%- include('sidebar'); %>
+            <main>
+                <h1>Dashboard</h1>
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h2>Total Students</h2>
+                            <p id="total-students"><%- total_students[0].total_students %></p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h2>Total Quizzes</h2>
+                            <p id="total-quizzes"><%- total_quizes[0].total_quizes %></p>                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-pencil-alt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h2>Total Attempts</h2>
+                            <p id="total-attempts"><%- total_attempts[0].total_attempts %></p>
+                        </div>
+                    </div>
+                </div>
+              
+                </div>
+            </main>
+        </div>
+    </div>
+
+    </div>
+
+
+</body>
+</html>

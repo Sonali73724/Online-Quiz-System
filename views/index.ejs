@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizlina</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="hero-section">
+        <div class="menu">
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#step">Steps</a></li>
+                <li><a href="quize">Quizes</a></li>
+                    <% if (user_logged_in) { %>
+                                <li><a href="my-results">Results</a></li>
+                                <li><a href="logout">Logout</a></li>
+                            <% } else { %>
+                                <li><a href="login">Login</a></li>
+                            <% } %>
+            </ul>
+        </div>
+        <div class="hero-image">
+
+
+            
+           
+        </div>
+
+
+        
+    </div>
+
+
+   <style>
+        .steps-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .step-card {
+            background-color: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            min-height: 250px;
+        }
+
+        .step-number {
+            color: #1a365d;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .step-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            background-color: #1a365d;
+            border-radius: 50%;
+            padding: 15px;
+        }
+
+        .step-text {
+            flex: 1;
+            text-align: left;
+            color: #333;
+            font-size: 1em;
+            line-height: 1.4;
+        }
+
+        /* Slick slider custom styles */
+        .slick-dots {
+            bottom: -40px;
+        }
+
+        .slick-dots li button:before {
+            font-size: 12px;
+            color: #1a365d;
+        }
+
+        .slick-dots li.slick-active button:before {
+            color: #1a365d;
+        }
+    </style>
+</head>
+<body>
+    <div class="steps-container" id="step">
+        <!-- Desktop View -->
+        <div class="step-card">
+            <div class="step-number">Step 1</div>
+            <div class="step-content">
+                <div class="step-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                        <line x1="7" y1="8" x2="17" y2="8"/>
+                        <line x1="7" y1="12" x2="17" y2="12"/>
+                        <line x1="7" y1="16" x2="17" y2="16"/>
+                    </svg>
+                </div>
+                <div class="step-text">Login – Start your adventure by signing in with your credentials for a secure and personalized experience.</div>
+            </div>
+        </div>
+
+        <div class="step-card">
+            <div class="step-number">Step 2</div>
+            <div class="step-content">
+                <div class="step-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                        <text x="8" y="16" font-size="12" fill="white">2</text>
+                    </svg>
+                </div>
+                <div class="step-text">Choose Your Quiz – Explore exciting topics and pick the quiz that sparks your curiosity.</div>
+            </div>
+        </div>
+
+        <div class="step-card">
+            <div class="step-number">Step 3</div>
+            <div class="step-content">
+                <div class="step-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                        <path d="M16 11l-4 4-4-4"/>
+                    </svg>
+                </div>
+                <div class="step-text">Attempt with Focus – Answer each question carefully, challenge your knowledge, and stay within the time limit.</div>
+            </div>
+        </div>
+
+        <div class="step-card">
+            <div class="step-number">Step 4</div>
+            <div class="step-content">
+                <div class="step-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                        <path d="M12 7v10M7 12h10"/>
+                    </svg>
+                </div>
+                <div class="step-text">Submit Your Answers – Confidently hit submit and lock in your responses for evaluation.</div>
+            </div>
+        </div>
+
+        <div class="step-card">
+            <div class="step-number">Step 5</div>
+            <div class="step-content">
+                <div class="step-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="M12 8v8M8 12h8"/>
+                    </svg>
+                </div>
+                <div class="step-text">View Instant Results – Instantly check your score, review correct answers, and get insightful feedback.</div>
+            </div>
+        </div>
+
+        <div class="step-card">
+            <div class="step-number">Step 6</div>
+            <div class="step-content">
+                <div class="step-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                </div>
+                <div class="step-text">Reattempt for Mastery – Not satisfied? Give it another go and aim for a better score!</div>
+            </div>
+        </div>
+    </div>
+
+   
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            // Clone desktop cards to slider
+            $('.step-card').clone().appendTo('.steps-slider');
+            
+            // Initialize slick slider for mobile
+            $('.steps-slider').slick({
+                dots: true,
+                infinite: false,
+                speed: 300,
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                arrows: false,
+                adaptiveHeight: true
+            });
+        });
+    </script>
+</body>
+</html>

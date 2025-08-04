@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Quizlina</title>
+    <link rel="stylesheet" href="/css/admin-panel.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="admin-panel">
+        <div class="sidebar">
+            <div class="logo">
+                <h2>Quizlina Admin</h2>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="/admin/dashboard"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="/admin/add-question"><i class="fas fa-plus-circle"></i> Add Question</a></li>
+                    <li><a href="/admin/view-student"><i class="fas fa-users"></i> View Students</a></li>
+                    <li><a href="/admin/view-result"><i class="fas fa-list-check"></i> View results</a></li>
+                    <li><a href="/admin/add-test-series"><i class="fas fa-list-ol"></i> Add Quiz Series</a></li>
+                    <li><a href="/admin/quiz-list"><i class="fas fa-clipboard-list"></i> Quiz List</a></li>
+
+                </ul>
+            </nav>
+        </div>
+                <div class="main-content">
+            <header>
+                <button id="toggle-sidebar"><i class="fas fa-bars"></i></button>
+                <div class="user-info">
+                    <span>Welcome, Admin</span>
+                    <a href="/logout" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </header>
+        

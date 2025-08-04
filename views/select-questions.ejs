@@ -1,0 +1,108 @@
+<%- include('sidebar'); %>
+
+<main>
+    <h1>Select Questions for <%= quiz.name %></h1>
+    <p>Duration: <%= quiz.duration %> minutes</p>
+    <div class="search-bar">
+        <input type="text" id="search-input" placeholder="Search questions...">
+        <button id="search-btn"><i class="fas fa-search"></i></button>
+    </div>
+    <table id="questions-table">
+        <thead>
+            <tr>
+                <th>Question</th>
+                <th>Options</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% questions.forEach(question => { %>
+                <tr data-question-id="<%= question.id %>">
+                    <td><%= question.question %></td>
+                    <td>
+                        A) <%= question.option_a %><br>
+                        B) <%= question.option_b %><br>
+                        C) <%= question.option_c %><br>
+                        D) <%= question.option_d %>
+                    </td>
+                    <td>
+                        <button class="add-remove-btn" data-action="add">Add</button>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+    <button id="save-selection" class="submit-btn">Save Selection</button>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const questionsTable = document.getElementById('questions-table');
+    const saveSelectionBtn = document.getElementById('save-selection');
+    const searchInput = document.getElementById('search-input');
+    const searchBtn = document.getElementById('search-btn');
+
+    questionsTable.addEventListener('click', function(e) {
+        if (e.target.classList.contains('add-remove-btn')) {
+            const btn = e.target;
+            const action = btn.dataset.action;
+            
+            if (action === 'add') {
+                btn.textContent = 'Remove';
+                btn.dataset.action = 'remove';
+                btn.classList.add('danger');
+            } else {
+                btn.textContent = 'Add';
+                btn.dataset.action = 'add';
+                btn.classList.remove('danger');
+            }
+        }
+    });
+
+    saveSelectionBtn.addEventListener('click', function() {
+        const selectedQuestions = Array.from(questionsTable.querySelectorAll('.add-remove-btn[data-action="remove"]'))
+            .map(btn => btn.closest('tr').dataset.questionId);
+
+        fetch('/admin/save-quiz-questions/<%= quiz.id %>', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ questionIds: selectedQuestions }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Questions saved successfully!');
+            } else {
+                alert('Error saving questions: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while saving the questions.');
+        });
+    });
+
+    function searchQuestions() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const rows = questionsTable.getElementsByTagName('tr');
+
+        for (let i = 1; i < rows.length; i++) {
+            const questionText = rows[i].getElementsByTagName('td')[0].textContent.toLowerCase();
+            if (questionText.includes(searchTerm)) {
+                rows[i].style.display = '';
+            } else {
+                rows[i].style.display = 'none';
+            }
+        }
+    }
+
+    searchBtn.addEventListener('click', searchQuestions);
+    searchInput.addEventListener('keyup', function(event) {
+        if (event.key === 'Enter') {
+            searchQuestions();
+        }
+    });
+});
+</script>

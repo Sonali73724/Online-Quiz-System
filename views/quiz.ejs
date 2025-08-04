@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <link rel="stylesheet" href="/css/quiz.css">
+
+</head>
+<body>
+    <div class="progress-bar">
+    </div>
+    <div class="quiz-container">
+        <div id="question-container">
+            <h2 id="question"></h2>
+            <div id="answer-buttons" class="btn-grid"></div>
+        </div>
+        <div class="controls">
+            <button id="prev-btn" class="control-btn">Previous</button>
+            <button id="next-btn" class="control-btn">Next</button>
+        </div>
+    </div>
+
+    <script>
+       const quizId = '<%= quizId %>';
+        let questions = <%- (questions) %>;
+        
+        console.log(questions);
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+
+
+        const progressBar = document.querySelector('.progress-bar');
+        const questionElement = document.getElementById('question');
+        const answerButtonsElement = document.getElementById('answer-buttons');
+        const nextButton = document.getElementById('next-btn');
+        const prevButton = document.getElementById('prev-btn');
+
+        function startQuiz() {
+            // Create progress steps
+            questions.forEach((_, index) => {
+                const step = document.createElement('div');
+                step.classList.add('progress-step');
+                step.dataset.step = index + 1;
+                progressBar.appendChild(step);
+            });
+
+            showQuestion(questions[currentQuestionIndex]);
+            updateProgressBar();
+        }
+
+              
+        function showQuestion(question) {
+            console.log(question);
+            questionElement.innerText = question.question;
+            answerButtonsElement.innerHTML = '';
+            const answers = [
+                { text: question.option_a, correct: question.correct_answer === 'A' },
+                { text: question.option_b, correct: question.correct_answer === 'B' },
+                { text: question.option_c, correct: question.correct_answer === 'C' },
+                { text: question.option_d, correct: question.correct_answer === 'D' }
+            ];
+            answers.forEach(answer => {
+                const button = document.createElement('button');
+                button.innerText = answer.text;
+                button.classList.add('btn');
+                button.addEventListener('click', () => selectAnswer(answer));
+                answerButtonsElement.appendChild(button);
+            });
+            updateButtonStates();
+        }     function selectAnswer(answer) {
+            userAnswers[currentQuestionIndex] = answer;
+            updateButtonStates();
+        }
+
+        function updateButtonStates() {
+            prevButton.disabled = currentQuestionIndex === 0;
+            if (currentQuestionIndex === questions.length - 1) {
+                nextButton.innerText = 'Finish';
+            } else {
+                nextButton.innerText = 'Next';
+            }
+            nextButton.disabled = !userAnswers[currentQuestionIndex];
+
+            // Highlight selected answer
+            Array.from(answerButtonsElement.children).forEach(button => {
+                button.classList.remove('selected');
+                if (userAnswers[currentQuestionIndex] && button.innerText === userAnswers[currentQuestionIndex].text) {
+                    button.classList.add('selected');
+                }
+            });
+        }
+
+        function updateProgressBar() {
+            const steps = document.querySelectorAll('.progress-step');
+            steps.forEach((step, index) => {
+                if (index < currentQuestionIndex) {
+                    step.classList.add('complete');
+                    step.classList.remove('active');
+                } else if (index === currentQuestionIndex) {
+                    step.classList.add('active');
+                    step.classList.remove('complete');
+                } else {
+                    step.classList.remove('active', 'complete');
+                }
+            });
+        }
+
+        nextButton.addEventListener('click', () => {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion(questions[currentQuestionIndex]);
+                updateProgressBar();
+            } else {
+                finishQuiz();
+            }
+        });
+
+        prevButton.addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion(questions[currentQuestionIndex]);
+                updateProgressBar();
+            }
+        });
+
+        function finishQuiz() {
+            const result = calculateResult();
+            sendResultToServer(result);
+        }
+
+        function calculateResult() {
+            let score = 0;
+            userAnswers.forEach((answer, index) => {
+                if (answer.correct) {
+                    score++;
+                }
+            });
+            return {
+                score: score,
+                totalQuestions: questions.length,
+                answers: userAnswers
+            };
+        }
+
+        function sendResultToServer(result) {
+            fetch('/submit-quiz', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    quizId: quizId,
+                    result: result
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showResult(result);
+                } else {
+                    alert('Error submitting quiz: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while submitting the quiz.');
+            });
+        }
+
+        function showResult(result) {
+            questionElement.innerHTML = '';
+            answerButtonsElement.innerHTML = '';
+            const resultContainer = document.createElement('div');
+            resultContainer.classList.add('result-container');
+            const resultMessage = document.createElement('h2');
+            resultMessage.classList.add('result-message');
+            resultMessage.innerHTML = `Quiz Completed!<br>Your Score: <span class="score">${result.score}/${result.totalQuestions}</span>`;
+            resultContainer.appendChild(resultMessage);
+            const buttonsContainer = document.createElement('div');
+            buttonsContainer.classList.add('result-buttons');
+            const moreQuizzesBtn = document.createElement('a');
+            moreQuizzesBtn.href = '/quize';
+            moreQuizzesBtn.classList.add('result-btn');
+            moreQuizzesBtn.textContent = 'More Quizzes';
+            buttonsContainer.appendChild(moreQuizzesBtn);
+
+            const homeBtn = document.createElement('a');
+            homeBtn.href = '/';
+            homeBtn.classList.add('result-btn');
+            homeBtn.textContent = 'Home';
+            buttonsContainer.appendChild(homeBtn);
+        
+            resultContainer.appendChild(buttonsContainer);
+        
+            questionElement.appendChild(resultContainer);
+        
+            nextButton.style.display = 'none';
+            prevButton.style.display = 'none';
+        }
+        startQuiz();
+    </script>
+</body>
+</html>

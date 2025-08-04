@@ -1,0 +1,16 @@
+<%- include('sidebar'); %>
+
+<main>
+    <h1>Add Test Series</h1>
+    <form id="add-test-series-form" method="POST" action="/admin/add-quiz">
+        <div class="form-group">
+            <label for="series-name">Test Series Name:</label>
+            <input type="text" id="series-name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="duration">Duration (in minutes):</label>
+            <input type="number" id="duration" name="duration" min="1" required>
+        </div>
+        <button type="submit" class="submit-btn">Add Test Series</button>
+    </form>
+</main>
